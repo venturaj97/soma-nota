@@ -5,7 +5,7 @@ from PIL import Image
 import re
 
 # Instanciar o leitor
-reader = easyocr.Reader(['pt'])  # Use o idioma desejado
+reader = easyocr.Reader(['pt'])
 
 # Título do aplicativo
 st.title("Sistema de Captura de Valores de Boletas")
