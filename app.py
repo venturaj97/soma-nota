@@ -29,8 +29,9 @@ if file is not None:
     st.text_area("Texto Extraído", texto_extraido, height=300)
 
     # Regex para capturar valores após 'R$' com possíveis variações
-    regex_valor = r'(?:R\s*\$|RS\s*|\sR\s*)\s*([\d,.]+)'
+    regex_valor = r'(?:R\s*\$|RS\s*)\s*([\d,.]+)'
     valores = re.findall(regex_valor, texto_extraido, re.IGNORECASE)
+    print(valores)
     
     # Exibir os valores capturados
     st.write("Valores capturados:", valores)
@@ -45,9 +46,6 @@ if file is not None:
             valores_float.append(valor_float)
         except ValueError:
             st.warning(f"Não foi possível converter o valor '{valor}' para float.")
-
-    # Exibir os valores capturados
-    st.write("Valores capturados:", valores_float)
 
     # Calcular a soma total
     soma_total = sum(valores_float)
