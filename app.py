@@ -16,19 +16,23 @@ if uploaded_file is not None:
     st.image(image, caption='Imagem Carregada', use_container_width=True)
 
     if st.button("Processar Imagem"):
-        with st.spinner('Processando...'):
-
-            img_cv = np.array(image)
+            img_cv = np.array(image.convert('RGB'))
             img_cv = cv2.cvtColor(img_cv, cv2.COLOR_RGB2BGR)
+
             gray_image = cv2.cvtColor(img_cv, cv2.COLOR_BGR2GRAY)
-
-
-            processed_image = gray_image
-
+            processed_image = cv2.adaptiveThreshold(
+                gray_image,
+                255, # Valor máximo que um pixel pode ter (branco)
+                cv2.ADAPTIVE_THRESH_GAUSSIAN_C,
+                cv2.THRESH_BINARY,
+                13, # Tamanho do bloco (experimente 11, 13, 15...)
+                9  # Constante C (experimente valores entre 2 e 10)
+            )
+            st.image(processed_image, caption='2. Imagem após Thresholding Adaptativo', use_container_width=True)
 
             extracted_text = pytesseract.image_to_string(processed_image, lang='por', config='--psm 6')
             st.subheader("Texto Extraído:")
-            st.text(extracted_text)
+            st.text(extracted_text if extracted_text else "Nenhum texto detectado.")
 
             #TODO NO TEXTO EXTRAIDO NÃO É ACHADO O VALOR DA PRIMEIRA BOLETA
             #TODO PRECISA DE REFINAMENTO COM O OPENCV PARA SABER SE O TESSERACT MELHORA A PRECISÃO
